@@ -248,6 +248,8 @@ class Suma( // Constructor Primario Suma
         agregarHistorial(total)
         return total
     }
+
+
     // Atributos y Metodos "Compartidos"
     companion object {
         // entre las instancias
