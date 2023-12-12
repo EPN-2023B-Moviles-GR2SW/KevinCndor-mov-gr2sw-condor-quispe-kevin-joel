@@ -105,14 +105,12 @@ fun main(args: Array<String>) {
                 }
 
                 val newProduct = Product(id,name,price,stock, isAvailable)
-                distributorController.createProduct(newProduct)
-                println("Producto creado exitosamente.")
+                distributor.addProduct(newProduct)
+                println("Producto agregado exitosamente.")
             }
         }
         6 ->{
             println()
-            val products = distributorController.readProducts()
-            distributorController.printProducts(products)
         }
 
     }
