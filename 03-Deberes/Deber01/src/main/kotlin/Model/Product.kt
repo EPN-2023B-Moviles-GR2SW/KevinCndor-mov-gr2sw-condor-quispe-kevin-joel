@@ -7,5 +7,3 @@ data class Product(
     val stock: Int,
     val isAvailable: Boolean
 )
-
-

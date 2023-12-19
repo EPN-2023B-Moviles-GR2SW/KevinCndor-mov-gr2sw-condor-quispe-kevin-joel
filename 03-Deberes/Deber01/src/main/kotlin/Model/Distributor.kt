@@ -15,7 +15,7 @@ data class Distributor (
         return productsList.toList()
     }
 
-    fun updateProduct(name: String, updatedProduct: Product){
+    fun updateProduct(name: String, updatedProduct: Product) {
         val indexToUpdate = mutableListOf<Int>()
 
         // Encuentra los índices de los elementos que cumplen la condición
@@ -31,6 +31,7 @@ data class Distributor (
             productsList[index] = updatedProduct
         }
     }
+
 
     fun deleteProduct(name: String){
         val productsToDelete = mutableListOf<Product>()

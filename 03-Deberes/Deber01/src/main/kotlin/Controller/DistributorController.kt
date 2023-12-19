@@ -36,7 +36,6 @@ class DistributorController(private val file: File) {
         println("Dirección: ${distributor.address}")
         println("Telefono: ${distributor.phone}")
         println("Correo: ${distributor.email}")
-
         println("Productos:")
         distributor.productsList.forEach {
             println("  - ${it.name} - Precio: ${it.price} - Stock: ${it.stock}")
