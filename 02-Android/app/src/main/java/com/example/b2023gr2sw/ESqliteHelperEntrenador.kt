@@ -48,7 +48,7 @@ class ESqliteHelperEntrenador(
         return if (resultadoGuardar.toInt() == -1) false else true
     }
 
-    fun elminiarEntrenadorFormulario(id:Int): Boolean{
+    fun eliminarEntrenadorFormulario(id:Int): Boolean{
         val conexionEscritura = writableDatabase
         // where ID = ?
         val parametrosConsultaDelete = arrayOf(id.toString())
