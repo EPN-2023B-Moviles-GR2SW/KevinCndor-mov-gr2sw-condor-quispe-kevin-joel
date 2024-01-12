@@ -1,6 +1,7 @@
-package com.example.examenib
+package com.example.examen01
 
-import Model.Product
+import android.app.Activity
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.ContextMenu
@@ -10,46 +11,54 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.ListView
-import com.example.examen01.R
-import com.example.examen01.model.Distributor
+import android.widget.TextView
+import androidx.activity.result.contract.ActivityResultContracts
+import com.example.examen01.model.Product
 import com.google.android.material.snackbar.Snackbar
 
 class ListViewProducts : AppCompatActivity() {
-    val array = BaseDatosMemoria.distributorsArray
+
     var indexSelectedItem = 0
+    var arrayIndex = 0
+    var productList = arrayListOf<Product>()
+    lateinit var adapter: ArrayAdapter<Product>
+
+    val contentCallback= registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ){ result ->
+        if (result.resultCode === Activity.RESULT_OK){
+            if (result.data != null){
+                val data = result.data
+                adapter.notifyDataSetChanged()
+            }
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_list_view_products)
-        val listView = findViewById<ListView>(R.id.lvListViewProducts)
-        val adapter = ArrayAdapter(
+
+        val distributorName = intent.getStringExtra("DistributorName")
+        val txtViewProducts = findViewById<TextView>(R.id.txtV_products)
+        if (distributorName != null) {
+            txtViewProducts.text = distributorName.uppercase()
+        }
+        productList = MemoryDatabase.getProductsForDistributorByName(distributorName.toString()) as ArrayList<Product>
+        val listView = findViewById<ListView>(R.id.listView_products)
+
+        adapter = ArrayAdapter(
             this,
             android.R.layout.simple_list_item_1,
-            array
+            productList
         )
         listView.adapter = adapter
-        adapter.notifyDataSetChanged()
 
-        val botonAnadirListView = findViewById<Button>(R.id.btn_add_product)
-        botonAnadirListView.setOnClickListener {
-            anadirCarro(adapter)
+        val createProductButtonLv = findViewById<Button>(R.id.btn_create_product_lv)
+        createProductButtonLv.setOnClickListener{
+            indexSelectedItem = -1
+            openActivityWithParameters(ProductsCrud::class.java)
         }
-
         registerForContextMenu(listView)
-    }
-
-    private fun anadirCarro(adapter: ArrayAdapter<Distributor>) {
-        val productList: MutableList<Product> = mutableListOf()
-        array.add(
-            Distributor(
-                "Arca Continental",
-                "Quito, Ecuador",
-                "4012200",
-                "arca@continental.org",
-                productList
-            )
-        )
-        adapter.notifyDataSetChanged()
     }
 
     override fun onCreateContextMenu(
@@ -59,29 +68,41 @@ class ListViewProducts : AppCompatActivity() {
     ) {
         super.onCreateContextMenu(menu, v, menuInfo)
         val inflater = menuInflater
-        inflater.inflate(R.menu.productmenu, menu)
+        inflater.inflate(R.menu.products_menu, menu)
         val info = menuInfo as AdapterView.AdapterContextMenuInfo
         val position = info.position
         indexSelectedItem = position
     }
 
     override fun onContextItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.mi_editar_c -> {
-                mostrarSnackbar("${indexSelectedItem}")
+        return when (item.itemId){
+            R.id.mi_update_product ->{
+                openActivityWithParameters(ProductsCrud::class.java)
                 return true
             }
-            R.id.mi_eliminar_c -> {
-                mostrarSnackbar("${indexSelectedItem}")
+            R.id.mi_delete_product ->{
+                mostrarSnackbar("Producto ${productList[indexSelectedItem].name} eliminado con éxito")
+                productList.removeAt(indexSelectedItem)
+                adapter.notifyDataSetChanged()
                 return true
             }
             else -> super.onContextItemSelected(item)
         }
     }
 
-    private fun mostrarSnackbar(texto: String) {
-        val snack = Snackbar.make(findViewById(R.id.lvListViewProducts),
-            texto, Snackbar.LENGTH_LONG)
+    private fun mostrarSnackbar(texto: String){
+        val snack = Snackbar.make(findViewById(
+            R.id.lv_products),
+            texto,
+            Snackbar.LENGTH_LONG
+        )
         snack.show()
+    }
+
+    private fun openActivityWithParameters(clase: Class<*>) {
+        val explicitIntent = Intent(this, clase)
+        explicitIntent.putExtra("position", indexSelectedItem)
+        explicitIntent.putExtra("arrayIndex", arrayIndex)
+        contentCallback.launch(explicitIntent)
     }
 }

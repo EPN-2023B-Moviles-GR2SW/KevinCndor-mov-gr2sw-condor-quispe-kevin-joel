@@ -1,20 +1,17 @@
 package com.example.examen01.model
 
-import Model.Product
-
-
-data class Distributor (
-    val name: String,
-    val address: String,
-    val phone: String,
-    val email: String,
-    val productsList: MutableList<Product>
-){
+data class Distributor(
+    var name: String,
+    var address: String,
+    var phone: String,
+    var email:String,
+    var productList: ArrayList<Product>
+) {
     fun addProduct(product: Product){
-        productsList.add(product)
+        productList.add(product)
     }
 
     override fun toString(): String {
-        return "Nombre: ${name} - dirección: ${address}"
+        return "Nombre: ${name}\nDirección: ${address}\nTeléfono: ${phone}\nEmail: ${email}"
     }
 }

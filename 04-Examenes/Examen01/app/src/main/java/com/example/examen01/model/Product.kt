@@ -1,13 +1,13 @@
-package Model
+package com.example.examen01.model
 
 data class Product(
     val id: Int,
-    val name: String,
-    val price: Double,
-    val stock: Int,
-    val isAvailable: Boolean
-){
+    var name: String,
+    var price:Double,
+    var stock: Int,
+    var isAvailable: Boolean
+) {
     override fun toString(): String {
-        return "Nombre: ${name} - Precio: ${price}"
+        return "Nombre: ${name}\nPrecio: ${price}\nDisponible: ${if (isAvailable)"Si" else "No"}"
     }
 }

@@ -1,6 +1,6 @@
 package com.example.examen01
 
-import Model.Product
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.ContextMenu
@@ -10,51 +10,57 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.ListView
-import androidx.appcompat.app.AppCompatActivity
+import androidx.activity.ComponentActivity
+import androidx.activity.result.contract.ActivityResultContracts
 import com.example.examen01.model.Distributor
-import com.example.examenib.BaseDatosMemoria
-import com.example.examenib.ListViewProducts
 import com.google.android.material.snackbar.Snackbar
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : ComponentActivity() {
 
-    val array = BaseDatosMemoria.distributorsArray
+    val distributorArrayList = MemoryDatabase.distributorsArrayList
     var indexSelectedItem = 0
+    lateinit var adapter: ArrayAdapter<Distributor>
+
+    val callbackContent =
+        registerForActivityResult(
+            ActivityResultContracts.StartActivityForResult()
+        ){ result ->
+            if(result.resultCode === Activity.RESULT_OK){
+                if(result.data != null){
+                    val data = result.data
+                    adapter.notifyDataSetChanged()
+                }
+            }
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_list_view_distributors)
 
-        val listView = findViewById<ListView>(R.id.lvListViewD)
-        val adapter = ArrayAdapter(
+        val listView = findViewById<ListView>(R.id.listView_distributors)
+        adapter = ArrayAdapter(
             this,
             android.R.layout.simple_list_item_1,
-            array
+            MemoryDatabase.distributorsArrayList
         )
         listView.adapter = adapter
-        adapter.notifyDataSetChanged()
 
-        val botonAnadirListView = findViewById<Button>(R.id.btn_add_distributor)
-        botonAnadirListView.setOnClickListener {
-            addDistributor(adapter)
+        listView.setOnItemClickListener { parent, view, position, id ->
+            val selectedDistributor = MemoryDatabase.distributorsArrayList[position]
+            val intent = Intent(this, ListViewProducts::class.java)
+            intent.putExtra("DistributorName", selectedDistributor.name)
+            startActivity(intent)
+        }
+
+        val createDistributorButtonLv = findViewById<Button>(R.id.btn_create_distributor_lv)
+        createDistributorButtonLv.setOnClickListener {
+            indexSelectedItem = -1
+            openActivityWithParameters(DistributorsCrud::class.java)
         }
 
         registerForContextMenu(listView)
     }
 
-    private fun addDistributor(adapter: ArrayAdapter<Distributor>) {
-        val productList: MutableList<Product> = mutableListOf()
-        array.add(
-            Distributor(
-                "Arca Continental",
-                "Quito, Ecuador",
-                "4012200",
-                "arca@continental.org",
-                productList
-            )
-        )
-        adapter.notifyDataSetChanged()
-    }
 
     override fun onCreateContextMenu(
         menu: ContextMenu?,
@@ -62,41 +68,41 @@ class MainActivity : AppCompatActivity() {
         menuInfo: ContextMenu.ContextMenuInfo?
     ) {
         super.onCreateContextMenu(menu, v, menuInfo)
-        val inflater = menuInflater
-        inflater.inflate(R.menu.distributormenu, menu)
+        val inflater= menuInflater
+        inflater.inflate(R.menu.distributors_menu,menu)
         val info = menuInfo as AdapterView.AdapterContextMenuInfo
         val position = info.position
         indexSelectedItem = position
     }
 
     override fun onContextItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.mi_editar_c -> {
-                mostrarSnackbar("${indexSelectedItem}")
+        return when(item.itemId) {
+            R.id.mi_update_distributor -> {
+                openActivityWithParameters(DistributorsCrud::class.java)
                 return true
             }
-            R.id.mi_eliminar_c -> {
-                mostrarSnackbar("${indexSelectedItem}")
-                return true
-            }
-            R.id.mi_carros -> {
-                irActividad(ListViewProducts::class.java)
+            R.id.mi_delete_distributor -> {
+                showSnackbar("Distribuidor ${distributorArrayList[indexSelectedItem].name} eliminado con éxito")
+                distributorArrayList.removeAt(indexSelectedItem)
+                adapter.notifyDataSetChanged()
                 return true
             }
             else -> super.onContextItemSelected(item)
         }
     }
 
-    fun mostrarSnackbar(texto: String){
-        val snack = Snackbar.make(findViewById(R.id.lvListViewD),
-            texto, Snackbar.LENGTH_LONG)
+    fun showSnackbar(text: String){
+        val snack = Snackbar.make(findViewById(
+            R.id.lv_distributors),
+            text,
+            Snackbar.LENGTH_LONG
+        )
         snack.show()
     }
 
-    fun irActividad(
-        clase: Class<*>
-    ){
-        val intent = Intent(this, clase)
-        startActivity(intent)
+    private fun openActivityWithParameters(clase: Class<*>) {
+        val explicitIntent = Intent(this, clase)
+        explicitIntent.putExtra("position", indexSelectedItem)
+        callbackContent.launch(explicitIntent)
     }
 }

@@ -3,9 +3,9 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/mi_editar_c"
-        android:title="Editar" />
+        android:id="@+id/mi_update_product"
+        android:title="Actualizar" />
     <item
-        android:id="@+id/mi_eliminar_c"
+        android:id="@+id/mi_delete_product"
         android:title="Eliminar" />
 </menu>
