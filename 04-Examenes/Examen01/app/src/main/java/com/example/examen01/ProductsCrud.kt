@@ -11,7 +11,6 @@ class ProductsCrud : AppCompatActivity() {
 
     val array = MemoryDatabase.distributorsArrayList
     var productList = arrayListOf<Product>()
-    var arrayIndex = -1
     var selectedItemIndex = -1
     var id: String = ""
     var name: String = ""
@@ -23,11 +22,10 @@ class ProductsCrud : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_crud_products)
 
-        arrayIndex = intent.getIntExtra("arrayIndex", -1)
         selectedItemIndex = intent.getIntExtra("position", -1)
         val distributorPosition = intent.getIntExtra("distributorPosition", -1)
 
-        productList = array[arrayIndex].productList
+        productList = array[distributorPosition].productList
 
         if(selectedItemIndex != -1){
             val inputId = findViewById<EditText>(R.id.input_id_p)
