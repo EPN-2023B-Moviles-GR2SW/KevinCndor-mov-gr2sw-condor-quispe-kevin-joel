@@ -8,7 +8,6 @@ import android.widget.Button
 import android.widget.EditText
 import com.example.examen01.model.Distributor
 import com.example.examen01.model.Product
-import com.google.android.material.snackbar.Snackbar
 
 class DistributorsCrud : AppCompatActivity() {
 
@@ -37,7 +36,7 @@ class DistributorsCrud : AppCompatActivity() {
             inputEmail.setText(array[selectedIndexItem].email)
         }
 
-        val createButton = findViewById<Button>(R.id.btn_create_distributor)
+        val createButton = findViewById<Button>(R.id.btn_save_distributor)
         if(selectedIndexItem == -1){
             createButton
                 .setOnClickListener{
@@ -59,7 +58,7 @@ class DistributorsCrud : AppCompatActivity() {
                     response()
                 }
         }
-        val updateButton = findViewById<Button>(R.id.btn_update_distributor)
+        val updateButton = findViewById<Button>(R.id.btn_save_distributor)
         if(selectedIndexItem != -1){
             updateButton
                 .setOnClickListener{

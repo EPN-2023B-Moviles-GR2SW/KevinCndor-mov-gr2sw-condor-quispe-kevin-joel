@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import com.example.examen01.model.Product
-import com.google.android.material.snackbar.Snackbar
 
 class ProductsCrud : AppCompatActivity() {
 
@@ -40,7 +39,7 @@ class ProductsCrud : AppCompatActivity() {
             inputStock.setText(productList[selectedItemIndex].stock.toString())
         }
 
-        val createButton = findViewById<Button>(R.id.btn_create_product)
+        val createButton = findViewById<Button>(R.id.btn_save_product)
         if (selectedItemIndex == -1) {
             createButton.setOnClickListener {
                 id = findViewById<EditText>(R.id.input_id_p).text.toString()
@@ -62,7 +61,7 @@ class ProductsCrud : AppCompatActivity() {
             }
         }
 
-        val updateButton = findViewById<Button>(R.id.btn_update_product)
+        val updateButton = findViewById<Button>(R.id.btn_save_product)
         if (selectedItemIndex != -1) {
             updateButton.setOnClickListener {
                 name = findViewById<EditText>(R.id.input_name_p).text.toString()
