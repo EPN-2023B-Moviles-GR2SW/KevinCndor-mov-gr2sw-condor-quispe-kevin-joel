@@ -48,6 +48,7 @@ class MainActivity : ComponentActivity() {
         listView.setOnItemClickListener { parent, view, position, id ->
             val selectedDistributor = MemoryDatabase.distributorsArrayList[position]
             val intent = Intent(this, ListViewProducts::class.java)
+            intent.putExtra("DistributorPosition",position)
             intent.putExtra("DistributorName", selectedDistributor.name)
             startActivity(intent)
         }
@@ -69,7 +70,7 @@ class MainActivity : ComponentActivity() {
     ) {
         super.onCreateContextMenu(menu, v, menuInfo)
         val inflater= menuInflater
-        inflater.inflate(R.menu.distributors_menu,menu)
+        inflater.inflate(R.menu.menu,menu)
         val info = menuInfo as AdapterView.AdapterContextMenuInfo
         val position = info.position
         indexSelectedItem = position
@@ -77,11 +78,11 @@ class MainActivity : ComponentActivity() {
 
     override fun onContextItemSelected(item: MenuItem): Boolean {
         return when(item.itemId) {
-            R.id.mi_update_distributor -> {
+            R.id.mi_update -> {
                 openActivityWithParameters(DistributorsCrud::class.java)
                 return true
             }
-            R.id.mi_delete_distributor -> {
+            R.id.mi_delete -> {
                 showSnackbar("Distribuidor ${distributorArrayList[indexSelectedItem].name} eliminado con éxito")
                 distributorArrayList.removeAt(indexSelectedItem)
                 adapter.notifyDataSetChanged()

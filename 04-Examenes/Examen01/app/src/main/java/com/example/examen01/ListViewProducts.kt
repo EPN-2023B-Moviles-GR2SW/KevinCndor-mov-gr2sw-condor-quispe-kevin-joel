@@ -21,6 +21,7 @@ class ListViewProducts : AppCompatActivity() {
     var indexSelectedItem = 0
     var arrayIndex = 0
     var productList = arrayListOf<Product>()
+    var distributorPosition = -1
     lateinit var adapter: ArrayAdapter<Product>
 
     val contentCallback= registerForActivityResult(
@@ -38,12 +39,13 @@ class ListViewProducts : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_list_view_products)
 
-        val distributorName = intent.getStringExtra("DistributorName")
+        val distributorName = intent.getStringExtra("DistributorName").toString()
+        distributorPosition = intent.getIntExtra("DistributorPosition",-1)
         val txtViewProducts = findViewById<TextView>(R.id.txtV_products)
         if (distributorName != null) {
             txtViewProducts.text = distributorName.uppercase()
         }
-        productList = MemoryDatabase.getProductsForDistributorByName(distributorName.toString()) as ArrayList<Product>
+        productList = MemoryDatabase.getProductsForDistributorByName(distributorName) as ArrayList<Product>
         val listView = findViewById<ListView>(R.id.listView_products)
 
         adapter = ArrayAdapter(
@@ -68,7 +70,7 @@ class ListViewProducts : AppCompatActivity() {
     ) {
         super.onCreateContextMenu(menu, v, menuInfo)
         val inflater = menuInflater
-        inflater.inflate(R.menu.products_menu, menu)
+        inflater.inflate(R.menu.menu, menu)
         val info = menuInfo as AdapterView.AdapterContextMenuInfo
         val position = info.position
         indexSelectedItem = position
@@ -76,11 +78,11 @@ class ListViewProducts : AppCompatActivity() {
 
     override fun onContextItemSelected(item: MenuItem): Boolean {
         return when (item.itemId){
-            R.id.mi_update_product ->{
+            R.id.mi_update ->{
                 openActivityWithParameters(ProductsCrud::class.java)
                 return true
             }
-            R.id.mi_delete_product ->{
+            R.id.mi_delete ->{
                 mostrarSnackbar("Producto ${productList[indexSelectedItem].name} eliminado con éxito")
                 productList.removeAt(indexSelectedItem)
                 adapter.notifyDataSetChanged()
@@ -103,6 +105,7 @@ class ListViewProducts : AppCompatActivity() {
         val explicitIntent = Intent(this, clase)
         explicitIntent.putExtra("position", indexSelectedItem)
         explicitIntent.putExtra("arrayIndex", arrayIndex)
+        explicitIntent.putExtra("distributorPosition", distributorPosition)
         contentCallback.launch(explicitIntent)
     }
 }

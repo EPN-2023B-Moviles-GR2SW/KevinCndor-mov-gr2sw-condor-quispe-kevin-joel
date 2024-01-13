@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import com.example.examen01.model.Product
-import com.google.android.material.snackbar.Snackbar
 
 class ProductsCrud : AppCompatActivity() {
 
@@ -26,7 +25,9 @@ class ProductsCrud : AppCompatActivity() {
 
         arrayIndex = intent.getIntExtra("arrayIndex", -1)
         selectedItemIndex = intent.getIntExtra("position", -1)
-        productList = array[arrayIndex].productList as ArrayList<Product>
+        val distributorPosition = intent.getIntExtra("distributorPosition", -1)
+
+        productList = array[arrayIndex].productList
 
         if(selectedItemIndex != -1){
             val inputId = findViewById<EditText>(R.id.input_id_p)
@@ -40,7 +41,7 @@ class ProductsCrud : AppCompatActivity() {
             inputStock.setText(productList[selectedItemIndex].stock.toString())
         }
 
-        val createButton = findViewById<Button>(R.id.btn_create_product)
+        val createButton = findViewById<Button>(R.id.btn_save_product)
         if (selectedItemIndex == -1) {
             createButton.setOnClickListener {
                 id = findViewById<EditText>(R.id.input_id_p).text.toString()
@@ -48,8 +49,10 @@ class ProductsCrud : AppCompatActivity() {
                 price = findViewById<EditText>(R.id.input_price_p).text.toString()
                 stock = findViewById<EditText>(R.id.input_stock_p).text.toString()
                 if(stock.isNotEmpty()) {if(stock.toInt() != 0) {isAvailable = true}}
+                /*productList.add(
 
-                productList.add(
+                )*/
+                array[distributorPosition].productList.add(
                     Product(
                         id.toInt(),
                         name,
@@ -62,7 +65,7 @@ class ProductsCrud : AppCompatActivity() {
             }
         }
 
-        val updateButton = findViewById<Button>(R.id.btn_update_product)
+        val updateButton = findViewById<Button>(R.id.btn_save_product)
         if (selectedItemIndex != -1) {
             updateButton.setOnClickListener {
                 name = findViewById<EditText>(R.id.input_name_p).text.toString()
