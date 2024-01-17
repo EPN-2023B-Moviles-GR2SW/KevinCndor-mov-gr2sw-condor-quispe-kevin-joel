@@ -9,4 +9,5 @@
         <item>Martes</item>
         <item>Miercoles</item>
     </string-array>
+    <string name="title_activity_google_maps_inicio">activity_google_maps_inicio</string>
 </resources>
