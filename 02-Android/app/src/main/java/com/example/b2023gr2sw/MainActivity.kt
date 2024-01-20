@@ -97,6 +97,12 @@ class MainActivity : AppCompatActivity() {
             .setOnClickListener {
                 irActividad(FRecyclerView::class.java)
             }
+
+        val botonGoogleMap = findViewById<Button>(R.id.btn_google_maps)
+        botonRView
+            .setOnClickListener {
+                irActividad(GGooglemapsActivity::class.java)
+            }
     }
 
     val callbackIntentPickUri = registerForActivityResult(
