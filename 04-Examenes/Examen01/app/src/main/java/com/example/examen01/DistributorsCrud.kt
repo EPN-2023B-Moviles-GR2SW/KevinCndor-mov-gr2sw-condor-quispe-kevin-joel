@@ -71,7 +71,6 @@ class DistributorsCrud : AppCompatActivity() {
                     array[selectedIndexItem].address = address
                     array[selectedIndexItem].phone = phone
                     array[selectedIndexItem].email = email
-
                     response()
                 }
         }
