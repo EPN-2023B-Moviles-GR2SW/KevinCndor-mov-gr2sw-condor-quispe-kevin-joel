@@ -4,7 +4,33 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c5379170-d52c-410d-bc4b-c760125462a9" name="Changes" comment="" />
+    <list default="true" id="c5379170-d52c-410d-bc4b-c760125462a9" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/../../03-Deberes/.idea/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../03-Deberes/.idea/.name" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../03-Deberes/.idea/compiler.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../03-Deberes/.idea/deploymentTargetDropDown.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../03-Deberes/.idea/gradle.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../03-Deberes/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../03-Deberes/.idea/kotlinc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../03-Deberes/.idea/migrations.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../03-Deberes/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../03-Deberes/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../03-Deberes/app/src/main/java/com/example/deber02/DistributorsCrud.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../03-Deberes/app/src/main/java/com/example/deber02/ESqliteHelperDistributor.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../03-Deberes/app/src/main/java/com/example/deber02/ListViewProducts.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../03-Deberes/app/src/main/java/com/example/deber02/MainActivity.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../03-Deberes/app/src/main/java/com/example/deber02/MemoryDataBase.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../03-Deberes/app/src/main/java/com/example/deber02/ProductsCrud.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../03-Deberes/app/src/main/java/com/example/deber02/model/Distributor.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../03-Deberes/app/src/main/java/com/example/deber02/model/Product.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../03-Deberes/app/src/main/res/layout/activity_distributors_crud.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../03-Deberes/app/src/main/res/layout/activity_list_view_distributors.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../03-Deberes/app/src/main/res/layout/activity_list_view_products.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../03-Deberes/app/src/main/res/layout/activity_products_crud.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/local.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -12,6 +38,11 @@
   </component>
   <component name="ClangdSettings">
     <option name="formatViaClangd" value="false" />
+  </component>
+  <component name="ExternalProjectsData">
+    <projectState path="$PROJECT_DIR$">
+      <ProjectState />
+    </projectState>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../.." />
@@ -21,15 +52,16 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.cidr.known.project.marker": "true",
-    "cf.first.check.clang-format": "false",
-    "cidr.known.project.marker": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;cf.first.check.clang-format&quot;: &quot;false&quot;,
+    &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/Aplicaciones_Moviles/GitHub/mov-gr2sw-condor-quispe-kevin-joel/04-Examenes/Examen01&quot;
   }
-}]]></component>
+}</component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
