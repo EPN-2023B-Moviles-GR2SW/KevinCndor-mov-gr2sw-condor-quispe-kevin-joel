@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteOpenHelper
 import androidx.compose.runtime.structuralEqualityPolicy
 
 class ESqliteHelperEntrenador(
-    contexto: Context?, //THIS
+    contexto: Context?,
 ) : SQLiteOpenHelper(
     contexto,
     "moviles", //nombre BDD
