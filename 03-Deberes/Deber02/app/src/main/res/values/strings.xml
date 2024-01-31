@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">Deber02</string>
+    <string name="distributors_title">Distribuidores</string>
+    <string name="create_distributor_button">Crear</string>
+    <string name="create_product_title">Nuevo Producto</string>
+    <string name="update_product_title">Actualizar Producto</string>
+    <string name="create_distributor_title">Nuevo Distribuidor</string>
+    <string name="update_distributor_title">Actualizar Distribuidor</string>
+    <string name="menu_show_products">Ver Productos</string>
+    <string name="menu_delete">Eliminar</string>
+    <string name="menu_update">Editar</string>
+</resources>

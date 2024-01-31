@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".CreateDistributor">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_form_supermercado"
+        android:layout_width="384dp"
+        android:layout_height="480dp"
+        android:background="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.481"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cl_title"
+        app:layout_constraintVertical_bias="0.251">
+
+        <EditText
+            android:id="@+id/txt_distributorName"
+            android:layout_width="320dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="52dp"
+            android:ems="10"
+            android:hint="Nombre"
+            android:inputType="textPersonName"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/btn_createDistributor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="28dp"
+            android:text="Guardar"
+            android:textColor="@color/black"
+            app:layout_constraintEnd_toEndOf="@+id/txt_distributorEmail"
+            app:layout_constraintHorizontal_bias="0.502"
+            app:layout_constraintStart_toStartOf="@+id/txt_distributorEmail"
+            app:layout_constraintTop_toBottomOf="@+id/txt_distributorEmail" />
+
+        <EditText
+            android:id="@+id/txt_distributorPhone"
+            android:layout_width="320dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="28dp"
+            android:ems="10"
+            android:hint="Telefono"
+            android:inputType="phone"
+            app:layout_constraintEnd_toEndOf="@+id/txt_distributorAddress"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/txt_distributorAddress"
+            app:layout_constraintTop_toBottomOf="@+id/txt_distributorAddress" />
+
+        <EditText
+            android:id="@+id/txt_distributorAddress"
+            android:layout_width="320dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="28dp"
+            android:ems="10"
+            android:hint="Dirección"
+            android:inputType="textPersonName"
+            app:layout_constraintEnd_toEndOf="@+id/txt_distributorName"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/txt_distributorName"
+            app:layout_constraintTop_toBottomOf="@+id/txt_distributorName" />
+
+        <EditText
+            android:id="@+id/txt_distributorEmail"
+            android:layout_width="319dp"
+            android:layout_height="47dp"
+            android:layout_marginTop="28dp"
+            android:ems="10"
+            android:hint="Email"
+            android:inputType="text"
+            app:layout_constraintEnd_toEndOf="@+id/txt_distributorPhone"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/txt_distributorPhone"
+            app:layout_constraintTop_toBottomOf="@+id/txt_distributorPhone" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_title"
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/tv_newDistributor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/create_distributor_title"
+            android:textColor="@color/material_dynamic_neutral40"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageButton
+            android:id="@+id/btn_go_back"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="#FFFFFF"
+            android:backgroundTint="#00FFFFFF"
+            android:src="?android:attr/actionModeCloseDrawable"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/tv_newDistributor"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="?android:attr/actionModeCloseDrawable" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

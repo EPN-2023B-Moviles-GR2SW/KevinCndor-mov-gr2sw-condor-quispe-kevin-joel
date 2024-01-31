@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/mi_show_products"
+        android:title="@string/menu_show_products" />
+    <item
+        android:id="@+id/mi_update"
+        android:title="@string/menu_update" />
+    <item
+        android:id="@+id/mi_delete"
+        android:title="@string/menu_delete" />
+</menu>

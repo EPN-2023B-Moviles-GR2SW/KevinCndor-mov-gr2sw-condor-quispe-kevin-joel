@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".UpdateDistributor">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_form_update_distributor"
+        android:layout_width="380dp"
+        android:layout_height="414dp"
+        android:layout_marginTop="72dp"
+        android:background="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.516"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cl_title">
+
+        <EditText
+            android:id="@+id/txt_distributor_update_name"
+            android:layout_width="320dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="40dp"
+            android:ems="10"
+            android:hint="Name"
+            android:inputType="textPersonName"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.516"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/btn_update_distributor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="28dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:text="Guardar"
+            android:textColor="@color/black"
+            app:layout_constraintEnd_toEndOf="@+id/txt_distributor_update_email"
+            app:layout_constraintHorizontal_bias="0.497"
+            app:layout_constraintStart_toStartOf="@+id/txt_distributor_update_email"
+            app:layout_constraintTop_toBottomOf="@+id/txt_distributor_update_email" />
+
+        <EditText
+            android:id="@+id/txt_distributor_update_phone"
+            android:layout_width="320dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="28dp"
+            android:ems="10"
+            android:hint="Phone"
+            android:inputType="numberDecimal"
+            app:layout_constraintEnd_toEndOf="@+id/txt_distributor_update_address"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/txt_distributor_update_address"
+            app:layout_constraintTop_toBottomOf="@+id/txt_distributor_update_address" />
+
+        <EditText
+            android:id="@+id/txt_distributor_update_address"
+            android:layout_width="320dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="28dp"
+            android:ems="10"
+            android:hint="Dirección"
+            android:inputType="textPersonName"
+            app:layout_constraintEnd_toEndOf="@+id/txt_distributor_update_name"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/txt_distributor_update_name"
+            app:layout_constraintTop_toBottomOf="@+id/txt_distributor_update_name" />
+
+        <EditText
+            android:id="@+id/txt_distributor_update_email"
+            android:layout_width="321dp"
+            android:layout_height="47dp"
+            android:layout_marginTop="16dp"
+            android:ems="10"
+            android:hint="Email"
+            android:inputType="text"
+            app:layout_constraintEnd_toEndOf="@+id/txt_distributor_update_phone"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/txt_distributor_update_phone"
+            app:layout_constraintTop_toBottomOf="@+id/txt_distributor_update_phone" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_title"
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/tv_update_distributor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/update_distributor_title"
+            android:textColor="@color/material_dynamic_neutral40"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.497"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageButton
+            android:id="@+id/btn_go_back"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="#FFFFFF"
+            android:backgroundTint="#00FFFFFF"
+            android:src="?android:attr/actionModeCloseDrawable"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/tv_update_distributor"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="?android:attr/actionModeCloseDrawable" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
