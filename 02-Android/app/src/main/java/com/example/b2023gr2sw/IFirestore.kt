@@ -42,7 +42,7 @@ class IFirestore : AppCompatActivity() {
 
         //obtener documento
         val botonObtenerDocumento = findViewById<Button>(R.id.btn_fs_odoc)
-        botonOrderBy.setOnClickListener { /*consultarDocumento(adaptador)*/ }
+        botonObtenerDocumento.setOnClickListener { consultarDocumento(adaptador) }
 
         //Crear Datos
         val botonCrear = findViewById<Button>(R.id.btn_fs_crear)
@@ -54,13 +54,13 @@ class IFirestore : AppCompatActivity() {
 
         // Empezar a paginar
         val botonFirebaseEmpezarPaginar = findViewById<Button>(R.id.btn_fs_epaginar)
-        botonFirebaseEliminar.setOnClickListener {
+        botonFirebaseEmpezarPaginar.setOnClickListener {
             query = null; consultarCiudades(adaptador);
         }
 
         // Paginar
         val botonFirebasePaginar = findViewById<Button>(R.id.btn_fs_paginar)
-        botonFirebaseEliminar.setOnClickListener { consultarCiudades(adaptador) }
+        botonFirebasePaginar.setOnClickListener { consultarCiudades(adaptador) }
 
         //Consultar indice compuesto
         val botonIndiceCompuesto = findViewById<Button>(R.id.btn_fs_ind_comp)
@@ -190,11 +190,47 @@ class IFirestore : AppCompatActivity() {
             .addOnFailureListener {  }
     }
 
-    /*fun consultarDocumento(
-        adaptador:
-    ){
+    fun consultarDocumento(
+        adaptador: ArrayAdapter<Icities>
+    ) {
+        val db = Firebase.firestore
+        val citiesRefUnico = db.collection("cities")
+        limpiarArreglo()
+        adaptador.notifyDataSetChanged()
+        // Coleccion "ciudad"
+        //     -> Coleccion "barrio"
+        //            -> Coleccion "direccion"
+        // "Quito" => "La_Floresta" => "E90-001"
+        // db.collection("ciudad").document("Quito")
+        //   .collection("barrio").document("La Floresta").collection("direccion")
+        //   .document("E90-001")
+        // .collection("nombre_coleccion_hijo").document("id_hijo")
+        // .collection("nombre_coleccion_nieto").document("id_nieto")
 
-    }*/
+
+        citiesRefUnico
+            .document("BJ")
+            .get() // obtener 1 DOCUMENTO
+            .addOnSuccessListener {
+                // it=> ES UN OBJETO!
+                arreglo
+                    .add(
+                        Icities(
+                            it.data?.get("name") as String?,
+                            it.data?.get("state") as String?,
+                            it.data?.get("country") as String?,
+                            it.data?.get("capital") as Boolean?,
+                            it.data?.get("population") as Long?,
+                            it.data?.get("regions") as
+                                    ArrayList<String>?,
+                        )
+                    )
+                adaptador.notifyDataSetChanged()
+            }
+            .addOnFailureListener {
+                // salio Mal
+            }
+    }
 
     fun limpiarArreglo(){
         arreglo.clear()
