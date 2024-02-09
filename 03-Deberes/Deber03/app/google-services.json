@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "436645533966",
+    "project_id": "b2023-gr2sw-kjcq",
+    "storage_bucket": "b2023-gr2sw-kjcq.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:436645533966:android:86e511ba821772d3c41f5f",
+        "android_client_info": {
+          "package_name": "com.example.b2023gr2sw"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBbhAQWaMGxvBYIGqcv4GTBhIUrWU3Yk7k"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:436645533966:android:e64eebed2fe0e24ac41f5f",
+        "android_client_info": {
+          "package_name": "com.example.deber03"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBbhAQWaMGxvBYIGqcv4GTBhIUrWU3Yk7k"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

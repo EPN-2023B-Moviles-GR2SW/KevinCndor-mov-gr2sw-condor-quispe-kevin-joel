@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".Inicio"
+    android:background="#F2F2F2">
+
+    <ImageView
+        android:id="@+id/img_user"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"
+        android:src="@drawable/icon_user" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/movements"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="65dp"
+        android:layout_marginRight="20dp"
+        app:cardBackgroundColor="#FFFFFF"
+        app:cardCornerRadius="10dp"
+        app:contentPadding="5dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="90dp"
+            android:paddingStart="10dp"
+            android:paddingTop="10dp"
+            android:paddingEnd="10dp">
+
+            <ImageView
+                android:id="@+id/imgv_saldo_p"
+                android:layout_width="55dp"
+                android:layout_height="55dp"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="15dp"
+                android:layout_marginTop="7.5dp"
+                android:src="@drawable/icon_paypal" />
+
+            <TextView
+                android:id="@+id/txt_monto_p"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_toEndOf="@+id/imgv_saldo_p"
+                android:layout_toRightOf="@+id/imgv_saldo_p"
+                android:fontFamily="sans-serif"
+                android:paddingLeft="10dp"
+                android:paddingTop="8dp"
+                android:text="$0,00"
+                android:textColor="@color/título"
+                android:textSize="26sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/txt_saldo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/txt_monto_p"
+                android:layout_toEndOf="@+id/imgv_saldo_p"
+                android:layout_toRightOf="@+id/imgv_saldo_p"
+                android:paddingTop="3dp"
+                android:paddingLeft="10dp"
+                android:text="Saldo"
+                android:textColor="@color/tipo_pago"
+                android:fontFamily="sans-serif"
+                android:textSize="16sp"/>
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Enviar de nuevo"
+        android:textSize="20sp"
+        android:layout_marginTop="200dp"
+        android:layout_marginLeft="15dp"
+        android:textColor="@color/monto"
+        android:textStyle="bold"
+        android:fontFamily="sans-serif-black"
+        />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rc_contactos"
+        android:layout_width="397dp"
+        android:layout_height="115dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="235dp"
+        android:orientation="horizontal" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_movements"
+        android:layout_width="389dp"
+        android:layout_height="352dp"
+        android:layout_marginTop="348dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:ignore="MissingConstraints"
+        tools:listitem="@layout/card_mov"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="16dp"
+        android:layout_marginTop="705dp"
+        android:background="@color/white">
+
+        <Button
+            android:id="@+id/btn_enviar"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginEnd="8dp"
+            android:background="@drawable/boton_borde_redondo"
+            android:text="Enviar"
+            android:textColor="@color/white"
+            android:textColorHint="@color/white" />
+
+        <Button
+            android:id="@+id/btn_solicitar"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="8dp"
+            android:background="@drawable/boton_borde_redondo"
+            android:text="Solicitar"
+            android:textColor="@color/white"
+            android:textColorHint="@color/white" />
+
+    </LinearLayout>
+
+</FrameLayout>

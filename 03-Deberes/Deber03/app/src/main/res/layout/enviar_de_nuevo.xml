@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_margin="1dp"
+    android:background="#F2F2F2">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="110dp"
+        android:layout_height="110dp"
+        android:layout_centerInParent="true"
+        android:background="#F2F2F2">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#F2F2F2">
+
+            <ImageView
+                android:id="@+id/cd_contactos"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:scaleType="centerCrop"
+                android:layout_centerHorizontal="true"
+                tools:ignore="MissingClass" />
+
+            <TextView
+                android:id="@+id/tv_contactos"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/cd_contactos"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="10dp"
+                android:text="Nombre Contacto"
+                android:textColor="@color/black"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:fontFamily="sans-serif-black"
+                android:autoSizeMaxTextSize="12dp"
+                android:autoSizeMinTextSize="10dp"/>
+
+            </RelativeLayout>
+
+    </androidx.cardview.widget.CardView>
+
+</RelativeLayout>

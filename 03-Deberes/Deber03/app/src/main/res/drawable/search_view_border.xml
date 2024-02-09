@@ -1,0 +1,12 @@
+<!-- res/drawable/search_view_border.xml -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="#FFFFFF" /> <!-- Color de fondo del cuadro de búsqueda -->
+    <corners android:radius="8dp" /> <!-- Radio de las esquinas, ajusta según sea necesario -->
+    <stroke
+        android:width="3dp"
+        android:color="@color/fecha"/>
+    <item android:name="android:background">@null</item>
+    <item android:name="android:imeOptions">actionSearch</item>
+    <item android:name="android:inputType">text</item>
+    <item android:name="android:imeOptions">flagNoExtractUi</item>
+</shape>

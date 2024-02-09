@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/inicio"
+        android:icon="@drawable/icon_home"
+        android:title="Inicio"
+        android:iconTint="@color/no_seleccionado" />
+
+    <item
+        android:id="@+id/pagos"
+        android:icon="@drawable/icon_pagos"
+        android:title="Pagos"
+        android:iconTint="@color/no_seleccionado" />
+
+    <item
+        android:id="@+id/cartera"
+        android:icon="@drawable/icon_cartera"
+        android:title="Cartera"
+        android:iconTint="@color/no_seleccionado" />
+</menu>

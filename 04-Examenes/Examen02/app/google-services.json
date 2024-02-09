@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "549359172314",
+    "project_id": "b2023-gr2sw-kjcq-examen02",
+    "storage_bucket": "b2023-gr2sw-kjcq-examen02.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:549359172314:android:59e0e8dbe8f17d1a8c43e3",
+        "android_client_info": {
+          "package_name": "com.example.examen02"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBCIq-F3nrhe8bs8J8nZSH2hv4fuQW2SBg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

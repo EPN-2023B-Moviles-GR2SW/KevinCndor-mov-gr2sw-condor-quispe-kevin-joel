@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF"
+    tools:context=".Cartera">
+
+    <View
+        android:id="@+id/line_separator"
+        android:layout_width="90dp"
+        android:layout_height="2dp"
+        android:layout_marginStart="210dp"
+        android:layout_marginTop="70dp"
+        android:background="@color/monto"
+        android:elevation="50dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="88dp"
+        android:background="#F2F2F2">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="40dp"
+            android:fontFamily="sans-serif-medium"
+            android:text="Cartera"
+            android:textColor="@color/mov_cartera"
+            android:textSize="18dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="40dp"
+            android:fontFamily="sans-serif-medium"
+            android:text="Recompensas"
+            android:textColor="@color/mov_cartera"
+            android:textSize="18dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="40dp"
+            android:fontFamily="sans-serif-black"
+            android:text="Movimiento"
+            android:textColor="@color/monto"
+            android:textSize="18dp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/txt_buscar"
+        android:layout_width="340dp"
+        android:layout_height="49dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="100dp"
+        android:background="@drawable/search_view_border"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="8dp"
+            android:contentDescription="@null"
+            android:src="@drawable/icon_lupa" />
+
+        <EditText
+            android:id="@+id/editTextSearch"
+            android:layout_width="285dp"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="5.2dp"
+            android:layout_marginTop="2dp"
+            android:background="@null"
+            android:fontFamily="sans-serif-medium"
+            android:hint="Buscar..."
+            android:imeOptions="actionSearch|flagNoExtractUi"
+            android:inputType="text"
+            android:padding="6dp"
+            android:textColorHint="@color/tipo_pago" />
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/img_filter"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="350dp"
+        android:layout_marginTop="105dp"
+        android:src="@drawable/icon_filter" />
+
+    <TextView
+        android:id="@+id/txt_completado"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="160dp"
+        android:layout_toEndOf="@+id/imgv_saldo_p"
+        android:layout_toRightOf="@+id/imgv_saldo_p"
+        android:fontFamily="sans-serif-black"
+        android:paddingLeft="30dp"
+        android:text="Completado"
+        android:textColor="@color/monto"
+        android:textSize="24sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/txt_fecha_cartera"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="200dp"
+        android:fontFamily="sans-serif-black"
+        android:paddingLeft="30dp"
+        android:text="ene 2024"
+        android:textColor="@color/monto"
+        android:textSize="19sp" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_movements"
+        android:layout_width="389dp"
+        android:layout_height="530dp"
+        android:layout_below="@id/txt_fecha_cartera"
+        android:layout_marginTop="250dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:ignore="MissingConstraints"
+        tools:listitem="@layout/card_mov" />
+
+</FrameLayout>
