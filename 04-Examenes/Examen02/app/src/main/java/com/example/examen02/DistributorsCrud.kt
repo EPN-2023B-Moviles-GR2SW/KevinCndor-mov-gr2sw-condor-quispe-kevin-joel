@@ -1,87 +1,82 @@
 package com.example.examen02
 
-import android.annotation.SuppressLint
+
+import android.content.ContentValues.TAG
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import com.example.examen02.model.Distributor
 import com.example.examen02.model.Product
+import com.google.firebase.firestore.FirebaseFirestore
 
 class DistributorsCrud : AppCompatActivity() {
-    val array = MemoryDatabase.distributorsArrayList
-    var selectedIndexItem = -1
-    var name: String = ""
-    var address: String = ""
-    var phone: String = ""
-    var email: String = ""
+    private val db = FirebaseFirestore.getInstance()
+    private val distributorsCollection = db.collection("distributors")
 
-    @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_distributors_crud)
 
-        selectedIndexItem = intent.getIntExtra("position", -1)
-        if(selectedIndexItem != -1){
-            val inputName = findViewById<EditText>(R.id.input_name_d)
-            val inputAddress = findViewById<EditText>(R.id.input_address_d)
-            val inputPhone = findViewById<EditText>(R.id.input_phone_d)
-            val inputEmail = findViewById<EditText>(R.id.input_email_d)
 
-            inputName.setText(array[selectedIndexItem].name)
-            inputAddress.setText(array[selectedIndexItem].address)
-            inputPhone.setText(array[selectedIndexItem].phone)
-            inputEmail.setText(array[selectedIndexItem].email)
-        }
+        // Obtener el índice y la información del distribuidor del intent
+        val selectedIndexItem = intent.getIntExtra("position", -1)
+        val distributorId = intent.getStringExtra("distributorId")
+        val distributorName = intent.getStringExtra("distributorName")
+        val distributorAddress = intent.getStringExtra("distributorAddress")
+        val distributorPhone = intent.getStringExtra("distributorPhone")
+        val distributorEmail = intent.getStringExtra("distributorEmail")
 
-        val createButton = findViewById<Button>(R.id.btn_save_distributor)
-        if(selectedIndexItem == -1){
-            createButton
-                .setOnClickListener{
-                    name = findViewById<EditText>(R.id.input_name_d).text.toString()
-                    address = findViewById<EditText>(R.id.input_address_d).text.toString()
-                    phone = findViewById<EditText>(R.id.input_phone_d).text.toString()
-                    email = findViewById<EditText>(R.id.input_email_d).text.toString()
-                    val productList: ArrayList<Product> = arrayListOf()
+        // Llenar los campos con la información del distribuidor
+        findViewById<EditText>(R.id.input_id_d).setText(distributorId)
+        findViewById<EditText>(R.id.input_name_d).setText(distributorName)
+        findViewById<EditText>(R.id.input_address_d).setText(distributorAddress)
+        findViewById<EditText>(R.id.input_phone_d).setText(distributorPhone)
+        findViewById<EditText>(R.id.input_email_d).setText(distributorEmail)
 
-                    array.add(
-                        Distributor(
-                            name,
-                            address,
-                            phone,
-                            email,
-                            productList
-                        )
-                    )
-                    response()
-                }
-        }
-        val updateButton = findViewById<Button>(R.id.btn_save_distributor)
-        if(selectedIndexItem != -1){
-            updateButton
-                .setOnClickListener{
-                    name = findViewById<EditText>(R.id.input_name_d).text.toString()
-                    address = findViewById<EditText>(R.id.input_address_d).text.toString()
-                    phone = findViewById<EditText>(R.id.input_phone_d).text.toString()
-                    email = findViewById<EditText>(R.id.input_email_d).text.toString()
+        val saveButton = findViewById<Button>(R.id.btn_save_distributor)
+        saveButton.setOnClickListener {
+            val id = findViewById<EditText>(R.id.input_id_d).text.toString()
+            val name = findViewById<EditText>(R.id.input_name_d).text.toString()
+            val address = findViewById<EditText>(R.id.input_address_d).text.toString()
+            val phone = findViewById<EditText>(R.id.input_phone_d).text.toString()
+            val email = findViewById<EditText>(R.id.input_email_d).text.toString()
+            val productList = mutableListOf<Product>()
 
-                    array[selectedIndexItem].name = name
-                    array[selectedIndexItem].address = address
-                    array[selectedIndexItem].phone = phone
-                    array[selectedIndexItem].email = email
-                    response()
-                }
+            val distributor = Distributor(id, name, address, phone, email, productList)
+
+            if (selectedIndexItem == -1) {
+                // Agregar un nuevo distribuidor
+                distributorsCollection.add(distributor)
+                    .addOnSuccessListener {
+                        response(-1)
+                    }
+                    .addOnFailureListener { e ->
+                        Log.e(TAG, "Error al agregar un nuevo distribuidor", e)
+                    }
+            } else if (distributorId != null) {
+                val nameF = intent.getStringExtra("nameF")
+                // Actualizar el distribuidor existente
+                distributorsCollection.document(nameF!!)
+                    .set(distributor)
+                    .addOnSuccessListener {
+                        response(selectedIndexItem)
+                    }
+                    .addOnFailureListener { e ->
+                        Log.e(TAG, "Error al actualizar el distribuidor", e)
+                    }
+            } else {
+                Log.e(TAG, "ID de distribuidor nulo")
+            }
         }
     }
 
-    private fun response(){
+    private fun response(position: Int) {
         val intentReturnParameters = Intent()
-        intentReturnParameters.putExtra("position", selectedIndexItem)
-        setResult(
-            RESULT_OK,
-            intentReturnParameters
-        )
+        intentReturnParameters.putExtra("position", position)
+        setResult(RESULT_OK, intentReturnParameters)
         finish()
     }
 }

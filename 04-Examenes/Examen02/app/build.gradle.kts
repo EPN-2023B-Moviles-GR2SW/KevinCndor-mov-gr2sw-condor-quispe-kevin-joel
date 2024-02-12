@@ -53,6 +53,11 @@ android {
 
 dependencies {
 
+    // Firebase
+    implementation(platform("com.google.firebase:firebase-bom:30.1.0"))
+    // Firestore
+    implementation("com.google.firebase:firebase-firestore-ktx")
+
     implementation("androidx.core:core-ktx:1.12.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")
     implementation("androidx.activity:activity-compose:1.8.2")

@@ -13,41 +13,55 @@ import android.widget.Button
 import android.widget.ListView
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
+import com.example.examen02.model.Distributor
 import com.example.examen02.model.Product
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.firestore.FirebaseFirestore
 
 class ListViewProducts : AppCompatActivity() {
 
-    var indexSelectedItem = 0
-    var arrayIndex = 0
-    var productList = arrayListOf<Product>()
-    var distributorPosition = -1
-    lateinit var adapter: ArrayAdapter<Product>
+    private val db = FirebaseFirestore.getInstance()
+    private val distributorsCollection = db.collection("distributors")
 
-    val contentCallback= registerForActivityResult(
+    private var nameF = ""
+    private var indexSelectedItem = 0
+    private var distributorPosition = -1
+    private var productList = mutableListOf<Product>()
+    private var distributorId = ""
+    private lateinit var adapter: ArrayAdapter<Product>
+
+    private val contentCallback = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
-    ){ result ->
-        if (result.resultCode === Activity.RESULT_OK){
-            if (result.data != null){
-                val data = result.data
-                adapter.notifyDataSetChanged()
-            }
+    ) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            // Actualizar la lista de productos después de agregar/modificar uno
+            updateProductList()
         }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_list_view_products)
+        nameF = intent.getStringExtra("nameF").toString()
 
         val distributorName = intent.getStringExtra("DistributorName").toString()
-        distributorPosition = intent.getIntExtra("DistributorPosition",-1)
+        distributorId = intent.getStringExtra("distributorId").toString()
+        distributorPosition = intent.getIntExtra("DistributorPosition", -1)
         val txtViewProducts = findViewById<TextView>(R.id.txtV_products)
         if (distributorName != null) {
             txtViewProducts.text = distributorName.uppercase()
         }
-        productList = MemoryDatabase.getProductsForDistributorByName(distributorName) as ArrayList<Product>
-        val listView = findViewById<ListView>(R.id.listView_products)
 
+        val listView = findViewById<ListView>(R.id.listView_products)
+        registerForContextMenu(listView)
+
+        val createProductButtonLv = findViewById<Button>(R.id.btn_create_product_lv)
+        createProductButtonLv.setOnClickListener {
+            indexSelectedItem = -1
+            openActivityWithParameters(ProductsCrud::class.java)
+        }
+
+        // Configurar el adaptador
         adapter = ArrayAdapter(
             this,
             android.R.layout.simple_list_item_1,
@@ -55,12 +69,8 @@ class ListViewProducts : AppCompatActivity() {
         )
         listView.adapter = adapter
 
-        val createProductButtonLv = findViewById<Button>(R.id.btn_create_product_lv)
-        createProductButtonLv.setOnClickListener{
-            indexSelectedItem = -1
-            openActivityWithParameters(ProductsCrud::class.java)
-        }
-        registerForContextMenu(listView)
+        // Actualizar la lista de productos
+        updateProductList()
     }
 
     override fun onCreateContextMenu(
@@ -77,24 +87,45 @@ class ListViewProducts : AppCompatActivity() {
     }
 
     override fun onContextItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId){
-            R.id.mi_update ->{
+        return when (item.itemId) {
+            R.id.mi_update -> {
                 openActivityWithParameters(ProductsCrud::class.java)
-                return true
+                true
             }
-            R.id.mi_delete ->{
-                mostrarSnackbar("Producto ${productList[indexSelectedItem].name} eliminado con éxito")
-                productList.removeAt(indexSelectedItem)
+            R.id.mi_delete -> {
+                // Eliminar el producto de la lista y actualizar Firestore
+                val deletedProduct = productList.removeAt(indexSelectedItem)
                 adapter.notifyDataSetChanged()
-                return true
+                deleteProductFromFirestore(deletedProduct)
+                true
             }
             else -> super.onContextItemSelected(item)
         }
     }
 
-    private fun mostrarSnackbar(texto: String){
-        val snack = Snackbar.make(findViewById(
-            R.id.lv_products),
+    private fun deleteProductFromFirestore(product: Product) {
+        // Actualizar la lista de productos en Firestore
+        distributorsCollection.document(nameF)
+            .update("productList", productList)
+            .addOnSuccessListener {
+                mostrarSnackbar("Producto eliminado con éxito")
+                // Limpiar el adaptador y agregar los productos actualizados
+                adapter.clear()
+                adapter.addAll(productList)
+                adapter.notifyDataSetChanged()
+            }
+            .addOnFailureListener { exception ->
+                // Manejar el error al actualizar los datos en Firestore
+                mostrarSnackbar("Error al eliminar el producto: ${exception.message}")
+                // Si ocurre un error al actualizar en Firestore, es posible que desees agregar el producto nuevamente a la lista
+                productList.add(indexSelectedItem, product)
+                adapter.notifyDataSetChanged()
+            }
+    }
+
+    private fun mostrarSnackbar(texto: String) {
+        val snack = Snackbar.make(
+            findViewById(R.id.lv_products),
             texto,
             Snackbar.LENGTH_LONG
         )
@@ -104,8 +135,37 @@ class ListViewProducts : AppCompatActivity() {
     private fun openActivityWithParameters(clase: Class<*>) {
         val explicitIntent = Intent(this, clase)
         explicitIntent.putExtra("position", indexSelectedItem)
-        explicitIntent.putExtra("arrayIndex", arrayIndex)
         explicitIntent.putExtra("distributorPosition", distributorPosition)
+        explicitIntent.putExtra("distributorId", getDistributorId())
+        explicitIntent.putExtra("nameF", nameF)
+        if (indexSelectedItem != -1) {
+            val selectedProduct = productList[indexSelectedItem]
+            explicitIntent.putExtra("productId", selectedProduct.id)
+            explicitIntent.putExtra("productName", selectedProduct.name)
+            explicitIntent.putExtra("productPrice", selectedProduct.price)
+            explicitIntent.putExtra("productStock", selectedProduct.stock)
+            explicitIntent.putExtra("productIsAvailable", selectedProduct.isAvailable)
+        }
         contentCallback.launch(explicitIntent)
+    }
+
+    private fun updateProductList() {
+        // Obtener la lista de productos del distribuidor desde Firestore
+        distributorsCollection.document(nameF).get()
+            .addOnSuccessListener { documentSnapshot ->
+                val distributor = documentSnapshot.toObject(Distributor::class.java)
+                if (distributor != null) {
+                    productList = distributor.productList!!
+                    adapter.clear()
+                    adapter.addAll(productList)
+                }
+            }
+            .addOnFailureListener { exception ->
+                // Manejar el error al obtener los datos del distribuidor
+            }
+    }
+
+    private fun getDistributorId(): String {
+        return distributorId
     }
 }

@@ -1,9 +1,10 @@
 package com.example.examen02
 
 import android.app.Activity
+import android.content.ContentValues.TAG
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.ContextMenu
 import android.view.MenuItem
 import android.view.View
@@ -15,24 +16,31 @@ import androidx.activity.ComponentActivity
 import androidx.activity.result.contract.ActivityResultContracts
 import com.example.examen02.model.Distributor
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.firestore.FirebaseFirestore
 
 class MainActivity : ComponentActivity() {
 
-    val distributorArrayList = MemoryDatabase.distributorsArrayList
-    var indexSelectedItem = 0
-    lateinit var adapter: ArrayAdapter<Distributor>
+    private val db = FirebaseFirestore.getInstance()
+    private val distributorsCollection = db.collection("distributors")
+    private val documentNames = mutableListOf<String>()
 
-    val callbackContent =
-        registerForActivityResult(
-            ActivityResultContracts.StartActivityForResult()
-        ){ result ->
-            if(result.resultCode === Activity.RESULT_OK){
-                if(result.data != null){
-                    val data = result.data
+    private var indexSelectedItem = 0
+    private var distributorList = mutableListOf<Distributor>()
+    private lateinit var adapter: ArrayAdapter<Distributor>
+
+    private val callbackContent = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        if (result.resultCode === Activity.RESULT_OK) {
+            if (result.data != null) {
+                val data = result.data
+                val position = data?.getIntExtra("position", -1)
+                if (position != null && position != -1) {
                     adapter.notifyDataSetChanged()
                 }
             }
         }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,16 +50,33 @@ class MainActivity : ComponentActivity() {
         adapter = ArrayAdapter(
             this,
             android.R.layout.simple_list_item_1,
-            MemoryDatabase.distributorsArrayList
+            distributorList
         )
         listView.adapter = adapter
+        adapter.notifyDataSetChanged()
+
+        distributorsCollection.get()
+            .addOnSuccessListener { querySnapshot ->
+
+                for (document in querySnapshot.documents) {
+                    val documentId = document.id
+                    documentNames.add(documentId)
+                }
+            }
+            .addOnFailureListener { exception ->
+                Log.w(TAG, "Error al obtener los documentos", exception)
+            }
+
+        // Obtener la lista de distribuidores desde Firestore
+        loadDistributors()
 
         listView.setOnItemClickListener { parent, view, position, id ->
-            val selectedDistributor = MemoryDatabase.distributorsArrayList[position]
-            val intent = Intent(this, ListViewProducts::class.java)
-            intent.putExtra("DistributorPosition",position)
-            intent.putExtra("DistributorName", selectedDistributor.name)
-            startActivity(intent)
+            val selectedDistributor = distributorList[position]
+            val explicitIntent = Intent(this, ListViewProducts::class.java)
+            explicitIntent.putExtra("distributorId", selectedDistributor.distributorId)
+            explicitIntent.putExtra("DistributorName", selectedDistributor.name)
+            explicitIntent.putExtra("nameF", documentNames[indexSelectedItem])
+            callbackContent.launch(explicitIntent)
         }
 
         val createDistributorButtonLv = findViewById<Button>(R.id.btn_create_distributor_lv)
@@ -59,10 +84,28 @@ class MainActivity : ComponentActivity() {
             indexSelectedItem = -1
             openActivityWithParameters(DistributorsCrud::class.java)
         }
-
         registerForContextMenu(listView)
     }
 
+    override fun onResume() {
+        super.onResume()
+        loadDistributors()
+    }
+
+    private fun loadDistributors() {
+        distributorsCollection.get()
+            .addOnSuccessListener { result ->
+                distributorList.clear()
+                for (document in result) {
+                    val distributor = document.toObject(Distributor::class.java)
+                    distributorList.add(distributor)
+                }
+                adapter.notifyDataSetChanged() // Notificar al adaptador de la lista que los datos han cambiado
+            }
+            .addOnFailureListener { exception ->
+                // Manejar el error al obtener la lista de distribuidores
+            }
+    }
 
     override fun onCreateContextMenu(
         menu: ContextMenu?,
@@ -70,32 +113,55 @@ class MainActivity : ComponentActivity() {
         menuInfo: ContextMenu.ContextMenuInfo?
     ) {
         super.onCreateContextMenu(menu, v, menuInfo)
-        val inflater= menuInflater
-        inflater.inflate(R.menu.menu,menu)
+        val inflater = menuInflater
+        inflater.inflate(R.menu.menu, menu)
         val info = menuInfo as AdapterView.AdapterContextMenuInfo
         val position = info.position
         indexSelectedItem = position
     }
 
     override fun onContextItemSelected(item: MenuItem): Boolean {
-        return when(item.itemId) {
+        return when (item.itemId) {
             R.id.mi_update -> {
                 openActivityWithParameters(DistributorsCrud::class.java)
-                return true
+                true
             }
             R.id.mi_delete -> {
-                showSnackbar("Distribuidor ${distributorArrayList[indexSelectedItem].name} eliminado con éxito")
-                distributorArrayList.removeAt(indexSelectedItem)
-                adapter.notifyDataSetChanged()
-                return true
+                val deletedDistributor = distributorList[indexSelectedItem]
+                deleteDistributorFromFirestore(deletedDistributor)
+                true
             }
             else -> super.onContextItemSelected(item)
         }
     }
 
-    fun showSnackbar(text: String){
-        val snack = Snackbar.make(findViewById(
-            R.id.lv_distributors),
+
+    private fun deleteDistributorFromFirestore(distributor: Distributor) {
+        val distributorId = distributor.distributorId
+        if (distributorId != null) {
+            distributorsCollection.document(documentNames[indexSelectedItem])
+                .delete()
+                .addOnSuccessListener {
+                    // Eliminar el distribuidor de la lista y notificar al adaptador
+                    distributorList.remove(distributor)
+                    adapter.notifyDataSetChanged()
+                    showSnackbar("Distribuidor eliminado correctamente")
+                }
+                .addOnFailureListener { e ->
+                    // Manejar el error al eliminar el distribuidor de Firestore
+                    Log.e(TAG, "Error al eliminar el distribuidor", e)
+                    showSnackbar("Error al eliminar el distribuidor")
+                }
+        } else {
+            Log.e(TAG, "ID de distribuidor nulo")
+            showSnackbar("ID de distribuidor nulo")
+        }
+    }
+
+
+    fun showSnackbar(text: String) {
+        val snack = Snackbar.make(
+            findViewById(R.id.lv_distributors),
             text,
             Snackbar.LENGTH_LONG
         )
@@ -105,6 +171,15 @@ class MainActivity : ComponentActivity() {
     private fun openActivityWithParameters(clase: Class<*>) {
         val explicitIntent = Intent(this, clase)
         explicitIntent.putExtra("position", indexSelectedItem)
+        if (indexSelectedItem != -1) {
+            val selectedDistributor = distributorList[indexSelectedItem]
+            explicitIntent.putExtra("distributorId", selectedDistributor.distributorId)
+            explicitIntent.putExtra("distributorName", selectedDistributor.name) // Nuevo
+            explicitIntent.putExtra("distributorAddress", selectedDistributor.address) // Nuevo
+            explicitIntent.putExtra("distributorPhone", selectedDistributor.phone) // Nuevo
+            explicitIntent.putExtra("distributorEmail", selectedDistributor.email) // Nuevo
+            explicitIntent.putExtra("nameF", documentNames[indexSelectedItem])
+        }
         callbackContent.launch(explicitIntent)
     }
 }
