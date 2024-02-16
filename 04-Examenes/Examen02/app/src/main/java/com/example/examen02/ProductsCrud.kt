@@ -2,7 +2,6 @@ package com.example.examen02
 
 import android.content.ContentValues
 import android.content.Intent
-import android.nfc.Tag
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -10,7 +9,6 @@ import android.widget.Button
 import android.widget.EditText
 import com.example.examen02.model.Distributor
 import com.example.examen02.model.Product
-import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 
 class ProductsCrud : AppCompatActivity() {
@@ -26,6 +24,7 @@ class ProductsCrud : AppCompatActivity() {
         // Obtener el índice y la información del producto del intent
 
         val selectedIndexItem = intent.getIntExtra("position", -1)
+        val editar = intent.getIntExtra("editar", -1)
         val distributorId = intent.getStringExtra("distributorId")
         val productId = intent.getIntExtra("productId", -1)
         val productName = intent.getStringExtra("productName")
@@ -33,12 +32,12 @@ class ProductsCrud : AppCompatActivity() {
         val productStock = intent.getIntExtra("productStock", 0)
         nameF = intent.getStringExtra("nameF").toString()
 
-
-        findViewById<EditText>(R.id.input_id_p).setText(productId.toString())
-        findViewById<EditText>(R.id.input_name_p).setText(productName)
-        findViewById<EditText>(R.id.input_price_p).setText(productPrice.toString())
-        findViewById<EditText>(R.id.input_stock_p).setText(productStock.toString())
-
+        if( editar == 0) {
+            findViewById<EditText>(R.id.input_id_p).setText(productId.toString())
+            findViewById<EditText>(R.id.input_name_p).setText(productName)
+            findViewById<EditText>(R.id.input_price_p).setText(productPrice.toString())
+            findViewById<EditText>(R.id.input_stock_p).setText(productStock.toString())
+        }
 
         val saveButton = findViewById<Button>(R.id.btn_save_product)
         saveButton.setOnClickListener {
@@ -54,7 +53,6 @@ class ProductsCrud : AppCompatActivity() {
 
             if (selectedIndexItem == -1) {
                 Log.e(ContentValues.TAG, "Agregar un nuevo producto")
-                // Agregar un nuevo producto
                 distributorsCollection.document(nameF)
                     .update("productList", productList)
                     .addOnSuccessListener {

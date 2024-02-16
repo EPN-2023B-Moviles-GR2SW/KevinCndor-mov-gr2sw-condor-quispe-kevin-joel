@@ -34,7 +34,6 @@ class ListViewProducts : AppCompatActivity() {
         ActivityResultContracts.StartActivityForResult()
     ) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
-            // Actualizar la lista de productos después de agregar/modificar uno
             updateProductList()
         }
     }
@@ -60,16 +59,12 @@ class ListViewProducts : AppCompatActivity() {
             indexSelectedItem = -1
             openActivityWithParameters(ProductsCrud::class.java)
         }
-
-        // Configurar el adaptador
         adapter = ArrayAdapter(
             this,
             android.R.layout.simple_list_item_1,
             productList
         )
         listView.adapter = adapter
-
-        // Actualizar la lista de productos
         updateProductList()
     }
 
@@ -93,7 +88,6 @@ class ListViewProducts : AppCompatActivity() {
                 true
             }
             R.id.mi_delete -> {
-                // Eliminar el producto de la lista y actualizar Firestore
                 val deletedProduct = productList.removeAt(indexSelectedItem)
                 adapter.notifyDataSetChanged()
                 deleteProductFromFirestore(deletedProduct)
@@ -104,20 +98,16 @@ class ListViewProducts : AppCompatActivity() {
     }
 
     private fun deleteProductFromFirestore(product: Product) {
-        // Actualizar la lista de productos en Firestore
         distributorsCollection.document(nameF)
             .update("productList", productList)
             .addOnSuccessListener {
                 mostrarSnackbar("Producto eliminado con éxito")
-                // Limpiar el adaptador y agregar los productos actualizados
                 adapter.clear()
                 adapter.addAll(productList)
                 adapter.notifyDataSetChanged()
             }
             .addOnFailureListener { exception ->
-                // Manejar el error al actualizar los datos en Firestore
                 mostrarSnackbar("Error al eliminar el producto: ${exception.message}")
-                // Si ocurre un error al actualizar en Firestore, es posible que desees agregar el producto nuevamente a la lista
                 productList.add(indexSelectedItem, product)
                 adapter.notifyDataSetChanged()
             }
@@ -145,12 +135,12 @@ class ListViewProducts : AppCompatActivity() {
             explicitIntent.putExtra("productPrice", selectedProduct.price)
             explicitIntent.putExtra("productStock", selectedProduct.stock)
             explicitIntent.putExtra("productIsAvailable", selectedProduct.isAvailable)
+            explicitIntent.putExtra("editar", 0)
         }
         contentCallback.launch(explicitIntent)
     }
 
     private fun updateProductList() {
-        // Obtener la lista de productos del distribuidor desde Firestore
         distributorsCollection.document(nameF).get()
             .addOnSuccessListener { documentSnapshot ->
                 val distributor = documentSnapshot.toObject(Distributor::class.java)
@@ -161,7 +151,6 @@ class ListViewProducts : AppCompatActivity() {
                 }
             }
             .addOnFailureListener { exception ->
-                // Manejar el error al obtener los datos del distribuidor
             }
     }
 

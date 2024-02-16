@@ -28,8 +28,6 @@ class Inicio : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val rootView = inflater.inflate(R.layout.fragment_inicio, container, false)
-
-        // Crear adaptador para el primer RecyclerView
         val adapterMovements = AdapterMovements()
 
         val recyclerView = rootView.findViewById<RecyclerView>(R.id.recycler_movements)

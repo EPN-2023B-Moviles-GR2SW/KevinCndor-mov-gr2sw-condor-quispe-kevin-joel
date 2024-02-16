@@ -55,9 +55,10 @@ class MainActivity : ComponentActivity() {
         listView.adapter = adapter
         adapter.notifyDataSetChanged()
 
+        loadDistributors()
+
         distributorsCollection.get()
             .addOnSuccessListener { querySnapshot ->
-
                 for (document in querySnapshot.documents) {
                     val documentId = document.id
                     documentNames.add(documentId)
@@ -66,9 +67,6 @@ class MainActivity : ComponentActivity() {
             .addOnFailureListener { exception ->
                 Log.w(TAG, "Error al obtener los documentos", exception)
             }
-
-        // Obtener la lista de distribuidores desde Firestore
-        loadDistributors()
 
         listView.setOnItemClickListener { parent, view, position, id ->
             val selectedDistributor = distributorList[position]
@@ -100,10 +98,9 @@ class MainActivity : ComponentActivity() {
                     val distributor = document.toObject(Distributor::class.java)
                     distributorList.add(distributor)
                 }
-                adapter.notifyDataSetChanged() // Notificar al adaptador de la lista que los datos han cambiado
+                adapter.notifyDataSetChanged()
             }
             .addOnFailureListener { exception ->
-                // Manejar el error al obtener la lista de distribuidores
             }
     }
 
@@ -142,13 +139,11 @@ class MainActivity : ComponentActivity() {
             distributorsCollection.document(documentNames[indexSelectedItem])
                 .delete()
                 .addOnSuccessListener {
-                    // Eliminar el distribuidor de la lista y notificar al adaptador
                     distributorList.remove(distributor)
                     adapter.notifyDataSetChanged()
                     showSnackbar("Distribuidor eliminado correctamente")
                 }
                 .addOnFailureListener { e ->
-                    // Manejar el error al eliminar el distribuidor de Firestore
                     Log.e(TAG, "Error al eliminar el distribuidor", e)
                     showSnackbar("Error al eliminar el distribuidor")
                 }
@@ -174,10 +169,10 @@ class MainActivity : ComponentActivity() {
         if (indexSelectedItem != -1) {
             val selectedDistributor = distributorList[indexSelectedItem]
             explicitIntent.putExtra("distributorId", selectedDistributor.distributorId)
-            explicitIntent.putExtra("distributorName", selectedDistributor.name) // Nuevo
-            explicitIntent.putExtra("distributorAddress", selectedDistributor.address) // Nuevo
-            explicitIntent.putExtra("distributorPhone", selectedDistributor.phone) // Nuevo
-            explicitIntent.putExtra("distributorEmail", selectedDistributor.email) // Nuevo
+            explicitIntent.putExtra("distributorName", selectedDistributor.name)
+            explicitIntent.putExtra("distributorAddress", selectedDistributor.address)
+            explicitIntent.putExtra("distributorPhone", selectedDistributor.phone)
+            explicitIntent.putExtra("distributorEmail", selectedDistributor.email)
             explicitIntent.putExtra("nameF", documentNames[indexSelectedItem])
         }
         callbackContent.launch(explicitIntent)

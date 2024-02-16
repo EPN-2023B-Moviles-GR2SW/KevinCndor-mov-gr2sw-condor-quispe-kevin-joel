@@ -20,8 +20,6 @@ class DistributorsCrud : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_distributors_crud)
 
-
-        // Obtener el índice y la información del distribuidor del intent
         val selectedIndexItem = intent.getIntExtra("position", -1)
         val distributorId = intent.getStringExtra("distributorId")
         val distributorName = intent.getStringExtra("distributorName")
@@ -29,7 +27,6 @@ class DistributorsCrud : AppCompatActivity() {
         val distributorPhone = intent.getStringExtra("distributorPhone")
         val distributorEmail = intent.getStringExtra("distributorEmail")
 
-        // Llenar los campos con la información del distribuidor
         findViewById<EditText>(R.id.input_id_d).setText(distributorId)
         findViewById<EditText>(R.id.input_name_d).setText(distributorName)
         findViewById<EditText>(R.id.input_address_d).setText(distributorAddress)
@@ -48,7 +45,6 @@ class DistributorsCrud : AppCompatActivity() {
             val distributor = Distributor(id, name, address, phone, email, productList)
 
             if (selectedIndexItem == -1) {
-                // Agregar un nuevo distribuidor
                 distributorsCollection.add(distributor)
                     .addOnSuccessListener {
                         response(-1)
@@ -56,9 +52,8 @@ class DistributorsCrud : AppCompatActivity() {
                     .addOnFailureListener { e ->
                         Log.e(TAG, "Error al agregar un nuevo distribuidor", e)
                     }
-            } else if (distributorId != null) {
+            } else {
                 val nameF = intent.getStringExtra("nameF")
-                // Actualizar el distribuidor existente
                 distributorsCollection.document(nameF!!)
                     .set(distributor)
                     .addOnSuccessListener {
@@ -67,8 +62,6 @@ class DistributorsCrud : AppCompatActivity() {
                     .addOnFailureListener { e ->
                         Log.e(TAG, "Error al actualizar el distribuidor", e)
                     }
-            } else {
-                Log.e(TAG, "ID de distribuidor nulo")
             }
         }
     }
